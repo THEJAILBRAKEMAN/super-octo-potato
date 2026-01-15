@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}The Hive{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'responsive-fixes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="The Hive Logo" class="logo-img">
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'forum_list' %}" class="nav-link">Forum</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'forum_create' %}" class="nav-link">New Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link register-btn">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'register' %}" class="nav-link register-btn">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+        <section class="page-content">
+            <div class="container">
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'img/logo_white.png' %}" alt="The Hive Logo" class="footer-logo-img">
+                        </a>
+                    </div>
+                    <p>Building communities, fostering innovation.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'forum_list' %}">Forum</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'forum_create' %}">New Post</a></li>
+                            <li>
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="footer-link-button">Logout</button>
+                                </form>
+                            </li>
+                        {% else %}
+                            <li><a href="{% url 'login' %}">Login</a></li>
+                            <li><a href="{% url 'register' %}">Register</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">LinkedIn</a>
+                        <a href="#" class="social-link">Discord</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 The Hive by Oliver Lespar. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'script.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

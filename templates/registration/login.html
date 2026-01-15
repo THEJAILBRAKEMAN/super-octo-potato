@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login - The Hive{% endblock %}
+
+{% block content %}
+<section class="page-content">
+    <div class="container">
+        <div class="auth-card">
+            <h1 class="page-title">Welcome Back</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-field">
+                    <label for="id_username">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="form-errors">{{ form.username.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-field">
+                    <label for="id_password">Password</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="form-errors">{{ form.password.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+                {% if form.non_field_errors %}
+                    <div class="form-errors">{{ form.non_field_errors|striptags }}</div>
+                {% endif %}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <a class="btn btn-secondary" href="{% url 'register' %}">Create Account</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
