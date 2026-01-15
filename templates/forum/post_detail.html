@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - The Hive{% endblock %}
+
+{% block content %}
+<section class="page-content">
+    <div class="container">
+        <div class="post-card">
+            <h1 class="page-title">{{ post.title }}</h1>
+            <p class="post-meta">By {{ post.author.get_full_name|default:post.author.username }} • {{ post.created_at|date:"M d, Y" }}</p>
+            <p>{{ post.body|linebreaks }}</p>
+            <div class="post-actions">
+                <a href="{% url 'forum_list' %}" class="btn btn-secondary">Back to Forum</a>
+                {% if user == post.author %}
+                    <a href="{% url 'forum_edit' post.pk %}" class="btn btn-secondary">Edit</a>
+                    <a href="{% url 'forum_delete' post.pk %}" class="btn btn-secondary">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
